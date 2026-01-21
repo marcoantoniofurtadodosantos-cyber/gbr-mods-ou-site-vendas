@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PASSADOR DE REPLAY - OFICIAL</title>
+    <style>
+        body { background-color: #050505; color: white; font-family: 'Segoe UI', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        .panel { width: 100%; max-width: 360px; padding: 25px; border: 2px solid #ff0000; border-radius: 20px; box-shadow: 0 0 25px #ff0000, inset 0 0 5px #ff0000; background: rgba(0, 0, 0, 0.95); text-align: center; }
+        .copyright { font-size: 10px; color: rgba(255, 255, 255, 0.3); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; cursor: pointer; }
+        h1 { color: #ff0000; text-shadow: 0 0 15px #ff0000; font-size: 20px; margin-top: 0; margin-bottom: 30px; text-transform: uppercase; }
+        .game-selection { display: flex; justify-content: space-between; margin-bottom: 25px; gap: 10px; }
+        .game-btn { flex: 1; background: transparent; border: 1px solid #ff0000; color: white; padding: 12px; border-radius: 8px; font-size: 12px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .game-btn.active { background: #ff0000; box-shadow: 0 0 15px #ff0000; }
+        .action-btn { width: 100%; padding: 16px; background: transparent; border: 2px solid #ffffff; color: #ffffff; font-weight: bold; border-radius: 12px; text-transform: uppercase; margin-top: 10px; cursor: pointer; }
+        #progress-container { width: 100%; background: #111; height: 14px; border-radius: 7px; margin-top: 25px; display: none; overflow: hidden; border: 1px solid #ff0000; }
+        #progress-bar { width: 0%; height: 100%; background: #ff0000; box-shadow: 0 0 10px #ff0000; }
+        #status { font-size: 12px; margin-top: 15px; color: #ff0000; font-family: monospace; min-height: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="panel">
+    <div class="copyright" onclick="toggleInstalacao()">Copyright ©️ GBR MODS</div>
+    <h1>PASSADOR DE REPLAY</h1>
+
+    <div class="game-selection">
+        <button id="btn-normal" class="game-btn active" onclick="selectGame('Normal')">FF NORMAL</button>
+        <button id="btn-max" class="game-btn" onclick="selectGame('Max')">FF MAX</button>
+    </div>
+
+    <button class="action-btn" onclick="iniciarPassador()">PASSAR REPLAY</button>
+
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+    <div id="status"></div>
+</div>
+
+<script>
+    let gameSelecionado = "Normal";
+    let estaInstalado = false; 
+
+    // Sons de Sistema
+    const soundError = new Audio('https://www.myinstants.com/media/sounds/erro.mp3');
+    const soundSuccess = new Audio('https://www.myinstants.com/media/sounds/mario-coin.mp3');
+
+    function toggleInstalacao() {
+        estaInstalado = !estaInstalado;
+        alert(estaInstalado ? "SISTEMA: Jogos 'Detectados'" : "SISTEMA: Erro de Instalação ativado");
+    }
+
+    function selectGame(tipo) {
+        gameSelecionado = tipo;
+        document.getElementById('btn-normal').classList.remove('active');
+        document.getElementById('btn-max').classList.remove('active');
+        document.getElementById(tipo === 'Normal' ? 'btn-normal' : 'btn-max').classList.add('active');
+    }
+
+    function iniciarPassador() {
+        const bar = document.getElementById('progress-bar');
+        const container = document.getElementById('progress-container');
+        const status = document.getElementById('status');
+        
+        status.style.color = "#ff0000";
+        status.innerText = "Buscando diretórios...";
+        container.style.display = 'block';
+        bar.style.width = '0%';
+        bar.style.backgroundColor = "#ff0000";
+        
+        let width = 0;
+        const interval = setInterval(() => {
+            if (width >= 30) {
+                clearInterval(interval);
+                if (!estaInstalado) {
+                    soundError.play(); // Toca som de erro
+                    status.innerText = `ERRO: FF ${gameSelecionado.toUpperCase()} NÃO INSTALADO!`;
+                    bar.style.backgroundColor = "#550000";
+                } else {
+                    continuarProcesso();
+                }
+            } else {
+                width++;
+                bar.style.width = width + '%';
+            }
+        }, 40);
+    }
+
+    function continuarProcesso() {
+        const bar = document.getElementById('progress-bar');
+        const status = document.getElementById('status');
+        let width = 30;
+        const logs = ["Copiando Data...", "Injetando Bypass...", "Movendo Replay...", "Finalizando..."];
+
+        const interval = setInterval(() => {
+            if (width >= 100) {
+                clearInterval(interval);
+                soundSuccess.play(); // Toca som de sucesso
+                status.style.color = "#00ff00";
+                status.innerText = "PROCESSO CONCLUÍDO COM SUCESSO!";
+            } else {
+                width++;
+                bar.style.width = width + '%';
+                if (width % 20 === 0) status.innerText = logs[Math.floor(width/25)];
+            }
+        }, 50);
+    }
+</script>
+</body>
+</html>
+
