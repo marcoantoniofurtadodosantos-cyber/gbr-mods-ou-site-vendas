@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GBR MODS - OFICIAL</title>
+    <style>
+        body { background: #050505; color: white; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; flex-direction: column; align-items: center; padding-bottom: 50px; }
+        
+        .page { width: 100%; max-width: 400px; padding: 20px; box-sizing: border-box; display: none; text-align: center; }
+        #venda-page { display: block; } 
+
+        .card { background: rgba(10, 0, 0, 0.9); border: 2px solid #ff0000; border-radius: 20px; padding: 25px; box-shadow: 0 0 20px #ff0000; margin-top: 20px; }
+        
+        h2 { color: #ff0000; text-shadow: 0 0 10px #ff0000; text-transform: uppercase; margin: 10px 0; font-size: 22px; }
+        .price { font-size: 38px; color: #ff0000; font-weight: bold; margin: 10px 0; }
+        
+        /* Seção de Benefícios */
+        .benefits-box {
+            text-align: left;
+            background: rgba(20, 20, 20, 0.8);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+            border-left: 4px solid #ff0000;
+        }
+        .benefits-box h3 { color: #ff0000; font-size: 16px; margin-top: 0; text-transform: uppercase; }
+        .benefits-list { list-style: none; padding: 0; margin: 0; font-size: 14px; color: #ddd; }
+        .benefits-list li { margin: 12px 0; display: flex; align-items: center; }
+        .benefits-list li::before { content: "🔥"; margin-right: 10px; font-size: 16px; }
+
+        input { width: 100%; padding: 15px; margin: 15px 0; background: #111; border: 1px solid #ff0000; color: white; border-radius: 10px; box-sizing: border-box; outline: none; text-align: center; }
+        
+        .btn { width: 100%; padding: 18px; border: none; border-radius: 10px; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .btn-buy { background: #ff0000; color: white; box-shadow: 0 0 15px #ff0000; font-size: 16px; }
+        .btn-nubank { background: #820ad1; color: white; box-shadow: 0 0 15px #820ad1; }
+        .btn-suporte { background: transparent; border: 1px solid #25d366; color: #25d366; font-size: 13px; text-shadow: 0 0 5px #25d366; }
+
+        footer { margin-top: 40px; font-size: 10px; color: #444; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+
+    <div id="venda-page" class="page">
+        <h2 style="margin-top: 30px;">PASSADOR DE REPLAY</h2>
+        
+        <div class="card">
+            <div style="font-size: 10px; letter-spacing: 2px; color: #888;">Copyright ©️ GBR MODS</div>
+            <div class="price">R$ 19,90</div>
+            
+            <button class="btn btn-buy" onclick="irPara('cadastro-page')">ADQUIRIR AGORA</button>
+        </div>
+
+        <div class="benefits-box">
+            <h3>Vantagens Exclusivas</h3>
+            <ul class="benefits-list">
+                <li><b>Acesso Permanente:</b> Pague uma vez e use para sempre (Vitalício).</li>
+                <li><b>Focado em Apostados:</b> O melhor passador para quem joga sério.</li>
+                <li><b>Melhor Bypass:</b> Sistema anti-ban 100% atualizado e seguro.</li>
+                <li><b>Indetectável:</b> Use sem medo de ser pego pelo sistema.</li>
+                <li><b>Suporte VIP:</b> Auxílio direto pelo WhatsApp +55 67 99961-8600.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="cadastro-page" class="page">
+        <h2>CADASTRO</h2>
+        <div class="card">
+            <input type="email" id="user-email" placeholder="Seu melhor e-mail">
+            <input type="text" id="user-name" placeholder="Seu Nome Completo">
+            <button class="btn btn-buy" onclick="validarECadastrar()">GERAR PAGAMENTO</button>
+        </div>
+    </div>
+
+    <div id="pix-page" class="page">
+        <h2>PAGAMENTO</h2>
+        <div class="card">
+            <p style="font-size: 13px; margin-bottom: 15px;">O acesso será enviado para:<br><b id="display-email" style="color: #ff0000;"></b></p>
+            
+            <button class="btn btn-nubank" onclick="abrirNubank()">PAGAR R$ 19,90 NO NUBANK</button>
+            
+            <p style="font-size: 11px; margin-top: 25px; color: #aaa;">Pague no link oficial acima e envie o comprovante abaixo para liberação imediata.</p>
+            
+            <button class="btn btn-suporte" onclick="abrirSuporte()">FALAR COM SUPORTE / ENVIAR COMPROVANTE</button>
+        </div>
+    </div>
+
+    <footer>&copy; 2026 GBR MODS - TODOS OS DIREITOS RESERVADOS</footer>
+
+    <script>
+        const linkNubank = "https://nubank.com.br/cobrar/1dcp3q/6970f403-9d9f-4f6f-9c01-bd4df702849e";
+        const seuNumeroZap = "5567999618600";
+
+        function irPara(idTela) {
+            document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+            document.getElementById(idTela).style.display = 'block';
+            window.scrollTo(0,0);
+        }
+
+        function validarECadastrar() {
+            const email = document.getElementById('user-email').value;
+            if(email.includes("@") && email.length > 5) {
+                document.getElementById('display-email').innerText = email;
+                irPara('pix-page');
+            } else {
+                alert("Por favor, insira um e-mail válido!");
+            }
+        }
+
+        function abrirNubank() {
+            window.location.href = linkNubank;
+        }
+
+        function abrirSuporte() {
+            const nome = document.getElementById('user-name').value;
+            const email = document.getElementById('user-email').value;
+            const texto = `Olá GBR MODS!%0AMeu nome é ${nome} (${email}). Acabei de pagar os R$ 19,90 pelo Nubank. Segue meu comprovante!`;
+            window.location.href = `https://wa.me/${seuNumeroZap}?text=${texto}`;
+        }
+    </script>
+
+</body>
+</html>
